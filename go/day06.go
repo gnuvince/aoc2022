@@ -24,11 +24,12 @@ func FindStartOfPacket(line []byte, numConsecutive int) int {
 }
 
 func IsStartOfPacket(packet []byte) bool {
-	allDifferent := true
 	for i := 0; i < len(packet); i += 1 {
 		for j := i + 1; j < len(packet); j += 1 {
-			allDifferent = allDifferent && (packet[i] != packet[j])
+			if packet[i] == packet[j] {
+				return false
+			}
 		}
 	}
-	return allDifferent
+	return true
 }
