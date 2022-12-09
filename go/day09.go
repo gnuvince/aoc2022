@@ -13,18 +13,9 @@ type point struct {
 }
 
 func main() {
-	head := point{0, 0}
-	tail := point{0, 0}
-	tail2 := point{0, 0}
-	tail3 := point{0, 0}
-	tail4 := point{0, 0}
-	tail5 := point{0, 0}
-	tail6 := point{0, 0}
-	tail7 := point{0, 0}
-	tail8 := point{0, 0}
-	tail9 := point{0, 0}
-	visited := make(map[point]int)
-	visited9 := make(map[point]int)
+	var knots [10]point
+	visited_tail := make(map[point]int)
+	visited_tail9 := make(map[point]int)
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		instruction := strings.Split(scanner.Text(), " ")
@@ -33,29 +24,22 @@ func main() {
 		for i := 0; i < steps; i += 1 {
 			switch dir {
 			case "U":
-				head.y += 1
+				knots[0].y += 1
 			case "D":
-				head.y -= 1
+				knots[0].y -= 1
 			case "R":
-				head.x += 1
+				knots[0].x += 1
 			case "L":
-				head.x -= 1
+				knots[0].x -= 1
 			}
-			tail = updateTail(head, tail)
-			tail2 = updateTail(tail, tail2)
-			tail3 = updateTail(tail2, tail3)
-			tail4 = updateTail(tail3, tail4)
-			tail5 = updateTail(tail4, tail5)
-			tail6 = updateTail(tail5, tail6)
-			tail7 = updateTail(tail6, tail7)
-			tail8 = updateTail(tail7, tail8)
-			tail9 = updateTail(tail8, tail9)
-
-			visited[tail] += 1
-			visited9[tail9] += 1
+			for i := 1; i < 10; i += 1 {
+				knots[i] = updateTail(knots[i-1], knots[i])
+			}
+			visited_tail[knots[1]] += 1
+			visited_tail9[knots[9]] += 1
 		}
 	}
-	fmt.Println(len(visited), len(visited9))
+	fmt.Println(len(visited_tail), len(visited_tail9))
 }
 
 func updateTail(head, tail point) point {
